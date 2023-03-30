@@ -3,33 +3,50 @@ from Book_store import staff
 from Book_store import books
 from Book_store import store
 from Book_store import customers
+from Book_store import sql_admin
+from Book_store import sql_staff
+from Book_store import sql_books
+from Book_store import sql_store
+from Book_store import sql_customers
 
-def add_admin(ad_list):
+ad_list=[]
+staff_list=[]
+books_list=[]
+customers_list=[]
+
+def restore_ad_list():
+    db = sql_admin.Database().Storage()
+    for i in range(0,len(db)):
+        ad_list.append(admin.Admin(db[i][0],db[i][1],db[i][2],db[i][3]))
+
+def restore_staff_list():
+    db = sql_staff.Database().Storage()
+    for i in range(0,len(db)):
+        staff_list.append(staff.Staff(db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5]))
+
+def restore_books_list():
+    db = sql_books.Database().Storage()
+    for i in range(0,len(db)):
+        books_list.append(books.Book(db[i][0],db[i][1],db[i][2],db[i][3],db[i][4],db[i][5],db[i][6],db[i][7]))
+
+def restore_customers_list():
+    db = sql_customers.Database().Storage()
+    for i in range(0,len(db)):
+        customers_list.append(customers.Customer(db[i][0],db[i][1],db[i][2],db[i][3],db[i][4]))
+
+def add_admin():
+    l = len(sql_admin.Database().Storage)
     print(f"Input admin info: \n")
     id = str(input(f"Admin ID: "))
     name = str(input(f"Admin name: "))
     dob = str(input("DoB: "))
     phone = str(input(f"Phone number: "))
-    ad_list += [admin.Admin(id, name, dob, phone)]
+    ad_list.append(admin.Admin(id, name, dob, phone))
+    sql_admin.Database().Insert(id,name,dob,phone,l)
 
-#For admin:
-def input_store_info():
-    print(f"Input store infomation: \n")
-    id = str(input(f"Store ID: "))
-    name = str(input(f"Store name: "))
-    address = str(input(f"Address: "))
-    phone = str(input(f"Phone number: "))
-    new_store = store.Store(id, name, address, phone)
-    return new_store
-    
-def show_store_info(store):
-    print(f"Store ID: {store.get_id()} \n"
-          f"Store name: {store.get_name()} \n"
-          f"Address: {store.get_address()} \n"
-          f"Phone number: {store.get_phone()} \n")
-    
-def add_staff(staff_list):
+def add_staff():
     n = int(input("Enter number of staffs you want to add: "))
+    l = len(sql_staff.Database().Storage)
     for i in range(n):
         print(f"\nEnter staff information: ")
         id = str(input(f"Enter staff ID: "))
@@ -37,12 +54,109 @@ def add_staff(staff_list):
         dob = str(input(f"DoB: "))
         address = str(input("Address: "))
         phone = str(input("Phone number: "))
-        staff_list += [staff.Staff(id, name, dob, address, phone)]
-        
+        staff_list.append(staff.Staff(id, name, dob, address, phone, 0))
+        sql_staff.Database().Insert(id, name, dob, address, phone, 0,l+i)
+
 def set_staff_salary(staff_list):
     for i in range(len(staff_list)):
         salary = int(input(f"\nSalary for staff {staff_list[i].get_name()} (VND/month): "))
         staff_list[i].set_salary(salary)
+        sql_staff.Database().Update_salary(salary,staff_list[i].get_id())
+
+#For staffs:
+def input_books():
+    n = int(input(f"Enter number of books to add: "))
+    l = len(sql_books.Database().Storage)
+    for i in range(n):
+        id = str(input(f"Book ID: "))
+        title = str(input(f"Title: "))
+        genre = str(input(f"Genre: "))
+        author = str(input(f"Author: "))
+        year = str(input(f"Year of publication: "))
+        quantity = int(input(f"Stock: "))
+        new_book = books.Book(id, title, genre, author, year, quantity, None, 0)
+        new_book.set_target()
+        new_book.set_price()
+        books_list.append(new_book)
+        sql_books.Database().Insert(id, title, genre, author, year, quantity, new_book.get_target(), new_book.get_price(), l+i)
+
+#For admin:
+def input_store_info():
+    # check co store info chua
+    if len(sql_store.Database().Storage())==0:
+        print(f"Input store infomation: \n")
+        id = str(input(f"Store ID: "))
+        name = str(input(f"Store name: "))
+        address = str(input(f"Address: "))
+        phone = str(input(f"Phone number: "))
+        new_store = store.Store(id, name, address, phone)
+        sql_store.Database().Insert(id,name,address,phone)
+    else:
+        print("Store information has already been inputted, would you like to update it?\n")
+        print("1. Yes\n2. No\n")
+        while (True):
+            choice = int(input())
+            if (choice==1):
+                print(f"Input store infomation: \n")
+                id = str(input(f"Store ID: "))
+                name = str(input(f"Store name: "))
+                address = str(input(f"Address: "))
+                phone = str(input(f"Phone number: "))
+                new_store = store.Store(id, name, address, phone)
+                sql_store.Database().Update(name,address,phone,id)
+                return
+            elif (choice==2): 
+                return
+            else:
+                print("Wrong input, please try again!")
+    return new_store
+
+def add_customer():
+    n = int(input(f"Enter number of customer you want to add: "))
+    l = len(sql_customers.Database().Storage)
+    for i in range(n):
+        id = str(input(f"Enter customer ID: "))
+        name = str(input(f"Enter customer name: "))
+        dob = str(input(f"Enter customer DoB: "))
+        addr = str(input(f"Enter customer address: "))
+        phone = str(input(f"Enter customer phone number: "))
+        new_customer = customers.Customer(id, name, dob, addr, phone)
+        customers_list.append(new_customer)
+        sql_customers.Database().Insert(id, name, dob, addr, phone, l+i)
+
+def Seatch_staff(id):
+    return sql_staff.Database().Search(id)[0][6]
+
+def Search_customer(id):
+    return sql_customers.Database().Search(id)[0][5]
+
+def Search_book(id):
+    return sql_books.Database().Search(id)[0][8]
+
+def Search_admin(id):
+    return sql_admin.Database().Search(id)[0][4]
+
+def remove_staff(id):
+    staff_list[Seatch_staff(id)].remove()
+    sql_staff.Database().Delete(id)
+
+def remove_customer(id):
+    customers_list[Search_customer(id)].remove()
+    sql_customers.Database().Delete(id)
+
+def remove_book(id):
+    books_list[Search_book(id)].remove()
+    sql_books.Database().Delete(id)
+
+def remove_admin(id):
+    ad_list[Search_admin(id)].remove()
+    sql_admin.Database().Delete(id)
+
+def show_store_info(store):
+    print(f"Store ID: {store.get_id()} \n"
+          f"Store name: {store.get_name()} \n"
+          f"Address: {store.get_address()} \n"
+          f"Phone number: {store.get_phone()} \n")      
         
 def show_staff(staff_list): #include salary
     print(f"All staffs information: \n")
@@ -82,9 +196,6 @@ def find_staff_index(staff_list): #by name
         print(f"Can't find staff!")
         return None
     
-def remove_staff(staff_list, i):
-    staff_list[i].remove()
-    
 def modify_staff_info(staff_list, i):
     print(f"What do you want to update? \n"
           f"1. Staff ID \n"
@@ -121,23 +232,7 @@ def modify_staff_info(staff_list, i):
             staff_list[i].set_salary(new_salary)
         case _:
             print(f"Invalid choice!")
-    
-
-#For staffs:
-def input_books(books_list):
-    n = int(input(f"Enter number of books to add: "))
-    for i in range(n):
-        id = str(input(f"Book ID: "))
-        title = str(input(f"Title: "))
-        genre = str(input(f"Genre: "))
-        author = str(input(f"Author: "))
-        year = str(input(f"Year of publication: "))
-        quantity = int(input(f"Stock: "))
-        new_book = books.Book(id, title, genre, author, year, quantity)
-        new_book.set_target()
-        new_book.set_price()
-        books_list += [new_book]
-    
+        
 def show_books(book_list): #include price
     for i in range(len(book_list)):
         print(f"\nBook ID: {book_list[i].get_id()} \n"

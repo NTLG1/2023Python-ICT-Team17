@@ -11,4 +11,8 @@ class Admin:
         self.__name = name
         self.__dob = dob
         self.__phone = phone
+
+    def get_id(self):
+        return self.__id
+    
         

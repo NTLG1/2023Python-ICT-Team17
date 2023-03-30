@@ -9,13 +9,13 @@
 #Can: Modify books info, input books, see books & store info, see & modify customers list
 
 class Staff:
-    def __init__(self, id, name, dob, address, phone):
+    def __init__(self, id, name, dob, address, phone, salary):
         self.__id = id
         self.__name = name
         self.__dob = dob
         self.__address = address
         self.__phone = phone
-        self.__salary = None
+        self.__salary = salary
     
     def set_id(self, id):
         self.__id = id

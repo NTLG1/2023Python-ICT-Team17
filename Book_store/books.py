@@ -9,15 +9,15 @@
 #Price
 
 class Book:
-    def __init__(self, id, title, genre, author, year, quantity):
+    def __init__(self, id, title, genre, author, year, quantity, target_audience, price):
         self.__id = id
         self.__title = title
         self.__genre = genre
         self.__author = author
         self.__pub_year = year
         self.__quantity = quantity
-        self.__target_audience = None
-        self.__price = 0
+        self.__target_audience = target_audience
+        self.__price = price
         
     def set_id(self, id):
         self.__id = id
