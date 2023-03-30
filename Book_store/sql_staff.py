@@ -14,6 +14,10 @@ class Database:
         self.dbCursor.execute("UPDATE staff SET name = ?, dob = ?, address = ?, phone = ?, salary = ? WHERE id = ?", (name, dob, address, phone, salary, id))
         self.dbConnection.commit()
 
+    def Update_Index(self, i):
+        self.dbCursor.execute("UPDATE staff SET i = i-1 WHERE i > ?", (i))
+        self.dbConnection.commit()
+
     def Update_salary(self,salary,id):
         self.dbCursor.execute("UPDATE staff SET salary = ? WHERE id = ?", (salary, id))
         self.dbConnection.commit()

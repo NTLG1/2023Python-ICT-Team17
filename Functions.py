@@ -124,7 +124,7 @@ def add_customer():
         customers_list.append(new_customer)
         sql_customers.Database().Insert(id, name, dob, addr, phone, l+i)
 
-def Seatch_staff(id):
+def Search_staff(id):
     try:
         return sql_staff.Database().Search(id)[0][6]
     except:
@@ -150,29 +150,37 @@ def Search_admin(id):
 
 def remove_staff(id):
     try:
-        del staff_list[Seatch_staff(id)]
+        i = Search_staff(id)
+        del staff_list[i]
         sql_staff.Database().Delete(id)
+        sql_staff.Database().Update_Index(i)
     except:
         return
 
 def remove_customer(id):
     try:
-        del customers_list[Search_customer(id)]
+        i = Search_customer(id)
+        del customers_list[i]
         sql_customers.Database().Delete(id)
+        sql_customers.Database().Update_Index(i)
     except:
         return
 
 def remove_book(id):
     try:
-        del books_list[Search_book(id)]
+        i = Search_book(id)
+        del books_list[i]
         sql_books.Database().Delete(id)
+        sql_books.Database().Update_Index(i)
     except:
         return
 
 def remove_admin(id):
     try:
-        del ad_list[Search_admin(id)]
+        i = Search_admin(id)
+        del ad_list[i]
         sql_admin.Database().Delete(id)
+        sql_admin.Database().Update_Index(i)
     except:
         return
 
@@ -395,8 +403,10 @@ def modify_customer_info(customers_list, i):
  
 #Need dunction to verify if ID already existed 
 
-
-
-
-
-
+restore_ad_list()
+#add_admin()
+remove_admin('8')
+remove_admin('9')
+remove_admin('10')
+remove_admin('1')
+print("")

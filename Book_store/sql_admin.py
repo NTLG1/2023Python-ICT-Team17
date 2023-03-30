@@ -14,6 +14,10 @@ class Database:
         self.dbCursor.execute("UPDATE admin SET name = ?, dob = ?, phone = ? WHERE id = ?", (name, dob, phone, id))
         self.dbConnection.commit()
 
+    def Update_Index(self, i):
+        self.dbCursor.execute("UPDATE admin SET i = i-1 WHERE i > ?", i)
+        self.dbConnection.commit()
+
     def Search(self, id):
         self.dbCursor.execute("SELECT * FROM admin WHERE id = ?", (id, ))
         searchResults = self.dbCursor.fetchall()

@@ -13,6 +13,10 @@ class Database:
     def Update(self, title, genre, author, year, quantity, target_audience, price, id):
         self.dbCursor.execute("UPDATE books SET title = ?, genre = ?, author = ?, year = ?, quantity = ? WHERE id = ?", (title, genre, author, year, quantity, target_audience, price, id))
         self.dbConnection.commit()
+      
+    def Update_Index(self, i):
+        self.dbCursor.execute("UPDATE books SET i = i-1 WHERE i > ?", (i))
+        self.dbConnection.commit()
 
     def Search(self, id):
         self.dbCursor.execute("SELECT * FROM books WHERE id = ?", (id, ))

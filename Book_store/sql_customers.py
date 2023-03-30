@@ -14,6 +14,10 @@ class Database:
         self.dbCursor.execute("UPDATE customers SET name = ?, dob = ?, address = ?, phone = ? WHERE id = ?", (name, dob, address, phone, id))
         self.dbConnection.commit()
 
+    def Update_Index(self, i):
+        self.dbCursor.execute("UPDATE customers SET i = i-1 WHERE i > ?", (i))
+        self.dbConnection.commit()
+
     def Search(self, id):
         self.dbCursor.execute("SELECT * FROM customers WHERE id = ?", (id, ))
         searchResults = self.dbCursor.fetchall()
