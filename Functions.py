@@ -35,7 +35,7 @@ def restore_customers_list():
         customers_list.append(customers.Customer(db[i][0],db[i][1],db[i][2],db[i][3],db[i][4]))
 
 def add_admin():
-    l = len(sql_admin.Database().Storage)
+    l = len(sql_admin.Database().Storage())
     print(f"Input admin info: \n")
     id = str(input(f"Admin ID: "))
     name = str(input(f"Admin name: "))
@@ -46,7 +46,7 @@ def add_admin():
 
 def add_staff():
     n = int(input("Enter number of staffs you want to add: "))
-    l = len(sql_staff.Database().Storage)
+    l = len(sql_staff.Database().Storage())
     for i in range(n):
         print(f"\nEnter staff information: ")
         id = str(input(f"Enter staff ID: "))
@@ -66,7 +66,7 @@ def set_staff_salary(staff_list):
 #For staffs:
 def input_books():
     n = int(input(f"Enter number of books to add: "))
-    l = len(sql_books.Database().Storage)
+    l = len(sql_books.Database().Storage())
     for i in range(n):
         id = str(input(f"Book ID: "))
         title = str(input(f"Title: "))
@@ -113,7 +113,7 @@ def input_store_info():
 
 def add_customer():
     n = int(input(f"Enter number of customer you want to add: "))
-    l = len(sql_customers.Database().Storage)
+    l = len(sql_customers.Database().Storage())
     for i in range(n):
         id = str(input(f"Enter customer ID: "))
         name = str(input(f"Enter customer name: "))
@@ -125,32 +125,56 @@ def add_customer():
         sql_customers.Database().Insert(id, name, dob, addr, phone, l+i)
 
 def Seatch_staff(id):
-    return sql_staff.Database().Search(id)[0][6]
+    try:
+        return sql_staff.Database().Search(id)[0][6]
+    except:
+        print("id not found")
 
 def Search_customer(id):
-    return sql_customers.Database().Search(id)[0][5]
+    try: 
+        return sql_customers.Database().Search(id)[0][5]
+    except:
+        print("id not found")
 
 def Search_book(id):
-    return sql_books.Database().Search(id)[0][8]
+    try:
+        return sql_books.Database().Search(id)[0][8]
+    except:
+        print("id not found")
 
 def Search_admin(id):
-    return sql_admin.Database().Search(id)[0][4]
+    try:
+        return sql_admin.Database().Search(id)[0][4]
+    except:
+        print("id not found")
 
 def remove_staff(id):
-    staff_list[Seatch_staff(id)].remove()
-    sql_staff.Database().Delete(id)
+    try:
+        del staff_list[Seatch_staff(id)]
+        sql_staff.Database().Delete(id)
+    except:
+        return
 
 def remove_customer(id):
-    customers_list[Search_customer(id)].remove()
-    sql_customers.Database().Delete(id)
+    try:
+        del customers_list[Search_customer(id)]
+        sql_customers.Database().Delete(id)
+    except:
+        return
 
 def remove_book(id):
-    books_list[Search_book(id)].remove()
-    sql_books.Database().Delete(id)
+    try:
+        del books_list[Search_book(id)]
+        sql_books.Database().Delete(id)
+    except:
+        return
 
 def remove_admin(id):
-    ad_list[Search_admin(id)].remove()
-    sql_admin.Database().Delete(id)
+    try:
+        del ad_list[Search_admin(id)]
+        sql_admin.Database().Delete(id)
+    except:
+        return
 
 def show_store_info(store):
     print(f"Store ID: {store.get_id()} \n"

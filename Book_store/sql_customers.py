@@ -4,10 +4,10 @@ class Database:
     def __init__(self):
         self.dbConnection = sqlite3.connect("bookstore.db")
         self.dbCursor = self.dbConnection.cursor()
-        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS customers (id PRIMARYKEY text, name text, dob text, address text, phone text, index int)")
+        self.dbCursor.execute("CREATE TABLE IF NOT EXISTS customers (id PRIMARYKEY text, name text, dob text, address text, phone text, i int)")
 
-    def Insert(self, id, name, dob, address, phone, index):
-        self.dbCursor.execute("INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)", (id, name, dob, address, phone, index))
+    def Insert(self, id, name, dob, address, phone, i):
+        self.dbCursor.execute("INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?)", (id, name, dob, address, phone, i))
         self.dbConnection.commit()
 
     def Update(self, name, dob, address, phone, id):
