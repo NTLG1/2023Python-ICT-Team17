@@ -15,7 +15,7 @@ class Database:
         self.dbConnection.commit()
 
     def Update_Index(self, i):
-        self.dbCursor.execute("UPDATE customers SET i = i-1 WHERE i > ?", (i))
+        self.dbCursor.execute("UPDATE customers SET i = i-1 WHERE i > ?", (i, ))
         self.dbConnection.commit()
 
     def Search(self, id):

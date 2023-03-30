@@ -402,11 +402,3 @@ def modify_customer_info(customers_list, i):
 
  
 #Need dunction to verify if ID already existed 
-
-restore_ad_list()
-#add_admin()
-remove_admin('8')
-remove_admin('9')
-remove_admin('10')
-remove_admin('1')
-print("")
